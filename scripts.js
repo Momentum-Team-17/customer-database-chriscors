@@ -6,10 +6,47 @@ Object.defineProperty(String.prototype, "capitalize", {
   enumerable: false,
 });
 
+customers.sort((a, b) => {
+  const nameA = a.name.last.toUpperCase(); // ignore upper and lowercase
+  const nameB = b.name.last.toUpperCase(); // ignore upper and lowercase
+  if (nameA < nameB) {
+    return -1;
+  }
+  if (nameA > nameB) {
+    return 1;
+  }
+
+  // names must be equal
+  return 0;
+});
+
 let directory = document.querySelector("#directory");
 
-for (let customer of customers) {
-  enumerateCustomers(customer);
+let dropdown = document.querySelector("#dropdown");
+let button = document.querySelector("#sort-button");
+button.addEventListener("click", function (event) {
+  customers.sort((a, b) => {
+    const nameA = a.name[dropdown.value].toUpperCase(); // ignore upper and lowercase
+    const nameB = b.name[dropdown.value].toUpperCase(); // ignore upper and lowercase
+    if (nameA < nameB) {
+      return -1;
+    }
+    if (nameA > nameB) {
+      return 1;
+    }
+
+    // names must be equal
+    return 0;
+  });
+  directory.replaceChildren();
+  loadCustomers();
+});
+
+loadCustomers();
+function loadCustomers() {
+  for (let customer of customers) {
+    enumerateCustomers(customer);
+  }
 }
 
 function enumerateCustomers(customer) {
